@@ -1,0 +1,104 @@
+name: pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    # Tests and the quality gate. If answers got worse, nothing after this runs.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Reuse the downloaded embedding model
+        uses: actions/cache@v4
+        with:
+          path: .models
+          key: embedding-bge-small-en-v1.5
+      - run: pip install -r requirements-dev.txt
+      - name: Build the search index
+        run: python -m askdocs.index
+      - name: Unit and API tests
+        run: python -m pytest -q
+      - name: Quality gate on control questions
+        run: python -m evals.run
+
+  image:
+    needs: quality
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.name.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Image name with the commit as its version
+        id: name
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.name.outputs.image }}
+
+  deploy:
+    # Off until Azure is connected: set the repository variable DEPLOY_ENABLED to true.
+    needs: image
+    if: vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # log in to Azure with a short-lived token, no stored password
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Apply infrastructure and roll out the new image
+        id: rollout
+        env:
+          IMAGE: ${{ needs.image.outputs.image }}
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+          AZURE_OPENAI_ENDPOINT: ${{ vars.AZURE_OPENAI_ENDPOINT }}
+        run: |
+          params=(image="$IMAGE")
+          if [ -n "$LLM_PROVIDER" ]; then
+            params+=(llmProvider="$LLM_PROVIDER" llmModel="$LLM_MODEL" azureOpenAiEndpoint="$AZURE_OPENAI_ENDPOINT")
+          fi
+          url=$(az deployment group create \
+            --resource-group "$RESOURCE_GROUP" \
+            --template-file infra/main.bicep \
+            --parameters "${params[@]}" \
+            --query properties.outputs.url.value -o tsv)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Deployed to $url" >> "$GITHUB_STEP_SUMMARY"
+      - name: Smoke test the live service
+        run: |
+          url="${{ steps.rollout.outputs.url }}"
+          for attempt in 1 2 3 4 5 6 7 8 9; do
+            if curl --fail --silent --max-time 20 "$url/health"; then break; fi
+            if [ "$attempt" = 9 ]; then echo "Service did not come up"; exit 1; fi
+            sleep 10
+          done
+          ask() { curl --fail --silent --max-time 30 -H 'Content-Type: application/json' -d "{\"question\": \"$1\"}" "$url/ask"; }
+          ask "Is social scoring of citizens by AI allowed?" | grep -q '"answered":true'
+          ask "How do I bake sourdough bread?" | grep -q '"answered":false'

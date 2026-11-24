@@ -1,0 +1,7 @@
+{
+  "hit@5": {"min": 0.92},
+  "mrr": {"min": 0.84},
+  "correct_source_rate": {"min": 0.84},
+  "refusal_recall": {"min": 0.8},
+  "false_refusal_rate": {"max": 0.06}
+}

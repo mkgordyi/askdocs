@@ -8,6 +8,14 @@ One rule runs through the whole project: **no source, no answer.** Every answer 
 to the article it comes from. If the regulation does not contain the answer, the
 service says so instead of guessing.
 
+## Try it
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mkgordyi/askdocs)
+
+The codespace installs the dependencies, builds the index and starts the service, about
+four minutes the first time. The page opens in the editor's preview tab; if the preview
+shows an error, reload it once. The terminal below it shows one JSON log line per question.
+
 ## How it works
 
 ```

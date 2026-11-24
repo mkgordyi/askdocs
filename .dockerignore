@@ -1,0 +1,12 @@
+.git
+.github
+.venv
+.models
+index
+tests
+evals
+infra
+__pycache__
+*.pyc
+.pytest_cache
+README.md

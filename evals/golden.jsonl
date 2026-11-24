@@ -1,0 +1,70 @@
+{"id": "a01", "question": "Which uses of AI are banned outright?", "expected": ["art_5"]}
+{"id": "a02", "question": "Is social scoring of citizens by AI allowed?", "expected": ["art_5"]}
+{"id": "a03", "question": "Can police use live facial recognition in public places?", "expected": ["art_5"]}
+{"id": "a04", "question": "Is emotion recognition allowed in the workplace or at school?", "expected": ["art_5"]}
+{"id": "a05", "question": "How does the regulation define an AI system?", "expected": ["art_3"]}
+{"id": "a06", "question": "What is a general-purpose AI model?", "expected": ["art_3"]}
+{"id": "a07", "question": "Who counts as a deployer?", "expected": ["art_3"]}
+{"id": "a08", "question": "What does provider mean in this regulation?", "expected": ["art_3"]}
+{"id": "a09", "question": "When is an AI system considered high-risk?", "expected": ["art_6", "anx_III"]}
+{"id": "a10", "question": "Is AI used to screen job applicants high-risk?", "expected": ["anx_III"]}
+{"id": "a11", "question": "Are AI systems used for credit scoring of individuals high-risk?", "expected": ["anx_III"]}
+{"id": "a12", "question": "Which areas of use are listed as high-risk, such as education or law enforcement?", "expected": ["anx_III"]}
+{"id": "a13", "question": "What must a risk management system for a high-risk AI system include?", "expected": ["art_9"]}
+{"id": "a14", "question": "What quality criteria apply to training, validation and testing data?", "expected": ["art_10"]}
+{"id": "a15", "question": "What technical documentation has to be prepared before a high-risk system is placed on the market?", "expected": ["art_11", "anx_IV"]}
+{"id": "a16", "question": "Do high-risk AI systems have to record events automatically?", "expected": ["art_12", "art_19"]}
+{"id": "a17", "question": "What information must the instructions for use contain?", "expected": ["art_13"]}
+{"id": "a18", "question": "How must humans be able to oversee a high-risk AI system?", "expected": ["art_14"]}
+{"id": "a19", "question": "What level of accuracy, robustness and cybersecurity is required?", "expected": ["art_15"]}
+{"id": "a20", "question": "What are the duties of a company that develops a high-risk AI system?", "expected": ["art_16"]}
+{"id": "a21", "question": "What should a provider's quality management system cover?", "expected": ["art_17"]}
+{"id": "a22", "question": "For how many years must a provider keep the documentation?", "expected": ["art_18"]}
+{"id": "a23", "question": "What must organisations that use a high-risk AI system do?", "expected": ["art_26"]}
+{"id": "a24", "question": "Who has to carry out a fundamental rights impact assessment?", "expected": ["art_27"]}
+{"id": "a25", "question": "What must an importer check before placing a high-risk AI system on the market?", "expected": ["art_23"]}
+{"id": "a26", "question": "What are the obligations of distributors?", "expected": ["art_24"]}
+{"id": "a27", "question": "When does a distributor or deployer become treated as the provider?", "expected": ["art_25"]}
+{"id": "a28", "question": "Do people have to be told they are talking to a chatbot?", "expected": ["art_50"]}
+{"id": "a29", "question": "Must deepfakes be labelled as artificially generated?", "expected": ["art_50"]}
+{"id": "a30", "question": "What documentation must providers of general-purpose AI models keep?", "expected": ["art_53", "anx_XI"]}
+{"id": "a31", "question": "When is a general-purpose AI model considered to pose systemic risk?", "expected": ["art_51", "anx_XIII"]}
+{"id": "a32", "question": "What additional obligations apply to general-purpose AI models with systemic risk?", "expected": ["art_55"]}
+{"id": "a33", "question": "What is the maximum fine for using a prohibited AI practice?", "expected": ["art_99"]}
+{"id": "a34", "question": "What fines can the Commission impose on providers of general-purpose AI models?", "expected": ["art_101"]}
+{"id": "a35", "question": "From what date does the regulation apply?", "expected": ["art_113"]}
+{"id": "a36", "question": "What is the role of the AI Office?", "expected": ["art_64", "art_3"]}
+{"id": "a37", "question": "What does the European Artificial Intelligence Board do?", "expected": ["art_66", "art_65"]}
+{"id": "a38", "question": "What is an AI regulatory sandbox?", "expected": ["art_57", "art_58", "art_3"]}
+{"id": "a39", "question": "Do high-risk AI systems have to be registered in an EU database?", "expected": ["art_49", "art_71"]}
+{"id": "a40", "question": "What are the rules for the CE marking?", "expected": ["art_48"]}
+{"id": "a41", "question": "What is an EU declaration of conformity?", "expected": ["art_47", "anx_V"]}
+{"id": "a42", "question": "How quickly must a serious incident be reported?", "expected": ["art_73"]}
+{"id": "a43", "question": "What is a post-market monitoring system?", "expected": ["art_72", "art_3"]}
+{"id": "a44", "question": "Does the regulation apply to AI systems used only for military purposes?", "expected": ["art_2"]}
+{"id": "a45", "question": "Does the regulation apply to providers established outside the Union?", "expected": ["art_2"]}
+{"id": "a46", "question": "What does AI literacy require from providers and deployers?", "expected": ["art_4"]}
+{"id": "a47", "question": "Can a person ask for an explanation of a decision taken with a high-risk AI system?", "expected": ["art_86"]}
+{"id": "a48", "question": "How can someone complain to a market surveillance authority?", "expected": ["art_85"]}
+{"id": "a49", "question": "What support is there for SMEs and start-ups?", "expected": ["art_62"]}
+{"id": "a50", "question": "Which conformity assessment procedure must a provider follow?", "expected": ["art_43"]}
+{"id": "a51", "question": "What requirements must notified bodies meet?", "expected": ["art_31"]}
+{"id": "a52", "question": "Can high-risk AI systems be tested in real world conditions outside a sandbox?", "expected": ["art_60"]}
+{"id": "a53", "question": "What must the authorised representative of a non-EU provider do?", "expected": ["art_22"]}
+{"id": "a54", "question": "How are people who report infringements protected?", "expected": ["art_87"]}
+{"id": "u01", "question": "What is the capital of France?", "expected": []}
+{"id": "u02", "question": "How do I bake sourdough bread?", "expected": []}
+{"id": "u03", "question": "Who won the football World Cup in 2018?", "expected": []}
+{"id": "u04", "question": "What is the corporate income tax rate in Germany?", "expected": []}
+{"id": "u05", "question": "How do I reset the password on my router?", "expected": []}
+{"id": "u06", "question": "What is the weather forecast for Prague tomorrow?", "expected": []}
+{"id": "u07", "question": "Write a Python function that sorts a list.", "expected": []}
+{"id": "u08", "question": "What are the symptoms of influenza?", "expected": []}
+{"id": "u09", "question": "How much does a monthly ChatGPT subscription cost?", "expected": []}
+{"id": "u10", "question": "What is the maximum fine under the GDPR?", "expected": []}
+{"id": "u11", "question": "What does the Digital Markets Act require from gatekeepers?", "expected": []}
+{"id": "u12", "question": "What notice period applies when an employee resigns in Czechia?", "expected": []}
+{"id": "u13", "question": "Which programming language is best for building websites?", "expected": []}
+{"id": "u14", "question": "How many employees does OpenAI have?", "expected": []}
+{"id": "u15", "question": "What is the recommended daily intake of vitamin D?", "expected": []}
+{"id": "u16", "question": "How do I train a neural network with PyTorch?", "expected": []}

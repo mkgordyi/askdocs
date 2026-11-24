@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AskDocs: questions about the EU AI Act</title>
+<style>
+  :root { --ink:#16202b; --muted:#5d6b7a; --line:#dde3ea; --accent:#0b6e6e; --bg:#f6f8fa; --warn:#8a4b00; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--ink); background:var(--bg); }
+  main { max-width:760px; margin:0 auto; padding:48px 20px 64px; }
+  h1 { font-size:28px; margin:0 0 6px; }
+  .lead { color:var(--muted); margin:0 0 28px; }
+  form { display:flex; gap:10px; }
+  input { flex:1; padding:13px 14px; font:inherit; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  input:focus { outline:2px solid var(--accent); outline-offset:1px; }
+  button { padding:13px 20px; font:inherit; font-weight:600; color:#fff; background:var(--accent); border:0; border-radius:8px; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:default; }
+  .examples { margin:14px 0 0; display:flex; flex-wrap:wrap; gap:8px; }
+  .examples button { padding:6px 12px; font-weight:400; font-size:14px; color:var(--accent); background:#fff; border:1px solid var(--line); }
+  #result { margin-top:28px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px 22px; }
+  .card.refused { border-left:4px solid var(--warn); }
+  .answer { margin:0 0 16px; white-space:pre-wrap; }
+  .meta { font-size:13px; color:var(--muted); margin:14px 0 0; }
+  h2 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+  ul { margin:0; padding:0; list-style:none; }
+  li { padding:10px 0; border-top:1px solid var(--line); }
+  li a { color:var(--accent); font-weight:600; text-decoration:none; }
+  li a:hover { text-decoration:underline; }
+  li p { margin:4px 0 0; font-size:14px; color:var(--muted); }
+  footer { margin-top:36px; font-size:13px; color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>AskDocs</h1>
+  <p class="lead">Ask about the EU AI Act. Every answer comes with the article it is taken from. If the text does not contain the answer, the service says so.</p>
+  <form id="form">
+    <input id="question" name="question" placeholder="For example: Must deepfakes be labelled?" minlength="3" maxlength="500" required autofocus>
+    <button id="submit" type="submit">Ask</button>
+  </form>
+  <div class="examples" id="examples">
+    <button type="button">Which uses of AI are banned outright?</button>
+    <button type="button">Must deepfakes be labelled as artificially generated?</button>
+    <button type="button">How do I bake sourdough bread?</button>
+  </div>
+  <div id="result" aria-live="polite"></div>
+  <footer>Source: Regulation (EU) 2024/1689, Official Journal of the European Union. This is a demo and not legal advice.</footer>
+</main>
+<script>
+  const form = document.getElementById('form');
+  const input = document.getElementById('question');
+  const submit = document.getElementById('submit');
+  const result = document.getElementById('result');
+
+  const el = (tag, props = {}, children = []) => {
+    const node = Object.assign(document.createElement(tag), props);
+    children.forEach(child => node.append(child));
+    return node;
+  };
+
+  function render(data) {
+    result.replaceChildren();
+    if (!data.answered) {
+      result.append(el('div', { className: 'card refused' }, [
+        el('p', { className: 'answer', textContent: 'The text of the regulation does not contain an answer to this question.' }),
+        el('p', { className: 'meta', textContent: `Reason: ${data.reason} · closest match ${data.confidence}` })
+      ]));
+      return;
+    }
+    const sources = el('ul', {}, data.sources.map(s => el('li', {}, [
+      el('a', { href: s.url, target: '_blank', rel: 'noopener', textContent: `${s.ref}: ${s.title}` }),
+      el('p', { textContent: s.excerpt + (s.excerpt.length >= 300 ? '...' : '') })
+    ])));
+    result.append(el('div', { className: 'card' }, [
+      el('p', { className: 'answer', textContent: data.answer }),
+      el('h2', { textContent: 'Sources' }),
+      sources,
+      el('p', { className: 'meta', textContent: `Mode: ${data.mode} · match ${data.confidence}` })
+    ]));
+  }
+
+  async function ask(question) {
+    submit.disabled = true;
+    result.replaceChildren(el('p', { className: 'meta', textContent: 'Searching the regulation...' }));
+    try {
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      render(await response.json());
+    } catch (error) {
+      result.replaceChildren(el('p', { className: 'meta', textContent: error.message }));
+    } finally {
+      submit.disabled = false;
+    }
+  }
+
+  form.addEventListener('submit', event => { event.preventDefault(); ask(input.value.trim()); });
+  document.getElementById('examples').addEventListener('click', event => {
+    if (event.target.tagName === 'BUTTON') { input.value = event.target.textContent; ask(input.value); }
+  });
+</script>
+</body>
+</html>

@@ -10,6 +10,11 @@ service says so instead of guessing.
 
 ## Try it
 
+Live demo: https://askdocs-kappa.vercel.app
+
+It is this repository built as a container at a pinned commit and run on Vercel. The
+first request after a pause can be slower while the container starts.
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mkgordyi/askdocs)
 
 The codespace installs the dependencies, builds the index and starts the service, about

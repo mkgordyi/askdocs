@@ -1,0 +1,8 @@
+.venv/
+.models/
+index/
+evals/report.json
+__pycache__/
+*.pyc
+.pytest_cache/
+.env

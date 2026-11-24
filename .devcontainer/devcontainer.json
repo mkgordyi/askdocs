@@ -1,0 +1,15 @@
+{
+  "name": "AskDocs",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "pip install -r requirements-dev.txt && python -m askdocs.index",
+  "postAttachCommand": {
+    "askdocs": "uvicorn askdocs.api:app --host 0.0.0.0 --port 8080"
+  },
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "AskDocs",
+      "onAutoForward": "openPreview"
+    }
+  }
+}
